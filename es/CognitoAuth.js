@@ -37,6 +37,7 @@ var CognitoAuth = function () {
    * @param {string} data.AppWebDomain Required: The application/user-pools Cognito web hostname,
    *                     this is set at the Cognito console.
    * @param {array} data.TokenScopesArray Optional: The token scopes
+   * @param {map}   data.Headers          Optional: Optional header to pass in requests
    * @param {string} data.RedirectUriSignIn Required: The redirect Uri,
    * which will be launched after authentication as signed in.
    * @param {string} data.RedirectUriSignOut Required:
@@ -58,6 +59,7 @@ var CognitoAuth = function () {
         ClientId = _ref.ClientId,
         AppWebDomain = _ref.AppWebDomain,
         TokenScopesArray = _ref.TokenScopesArray,
+        Headers = _ref.Headers,
         RedirectUriSignIn = _ref.RedirectUriSignIn,
         RedirectUriSignOut = _ref.RedirectUriSignOut,
         IdentityProvider = _ref.IdentityProvider,
@@ -84,6 +86,7 @@ var CognitoAuth = function () {
     this.storage = Storage || new StorageHelper().getStorage();
     this.username = this.getLastUser();
     this.userPoolId = UserPoolId;
+    this.Headers = Headers || { 'Content-Type': 'application/x-www-form-urlencoded' };
     this.signInUserSession = this.getCachedSession();
     this.signInUserSession.setTokenScopes(tokenScopes);
     this.launchUri = typeof LaunchUri === 'function' ? LaunchUri : launchUri;
@@ -144,7 +147,7 @@ var CognitoAuth = function () {
       HOSTNAMEREGEX: /:\/\/([0-9]?\.)?(.[^/:]+)/i,
       QUERYPARAMETERREGEX1: /#(.+)/,
       QUERYPARAMETERREGEX2: /=(.+)/,
-      HEADER: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      HEADER: this.Headers
     };
     return CognitoConstants;
   };

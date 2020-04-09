@@ -933,6 +933,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @param {string} data.AppWebDomain Required: The application/user-pools Cognito web hostname,
 	   *                     this is set at the Cognito console.
 	   * @param {array} data.TokenScopesArray Optional: The token scopes
+	   * @param {map}   data.Headers          Optional: Optional header to pass in requests
 	   * @param {string} data.RedirectUriSignIn Required: The redirect Uri,
 	   * which will be launched after authentication as signed in.
 	   * @param {string} data.RedirectUriSignOut Required:
@@ -954,6 +955,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        ClientId = _ref.ClientId,
 	        AppWebDomain = _ref.AppWebDomain,
 	        TokenScopesArray = _ref.TokenScopesArray,
+	        Headers = _ref.Headers,
 	        RedirectUriSignIn = _ref.RedirectUriSignIn,
 	        RedirectUriSignOut = _ref.RedirectUriSignOut,
 	        IdentityProvider = _ref.IdentityProvider,
@@ -980,6 +982,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.storage = Storage || new _StorageHelper2.default().getStorage();
 	    this.username = this.getLastUser();
 	    this.userPoolId = UserPoolId;
+	    this.Headers = Headers || { 'Content-Type': 'application/x-www-form-urlencoded' };
 	    this.signInUserSession = this.getCachedSession();
 	    this.signInUserSession.setTokenScopes(tokenScopes);
 	    this.launchUri = typeof LaunchUri === 'function' ? LaunchUri : _UriHelper.launchUri;
@@ -1042,7 +1045,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        HOSTNAMEREGEX: /:\/\/([0-9]?\.)?(.[^/:]+)/i,
 	        QUERYPARAMETERREGEX1: /#(.+)/,
 	        QUERYPARAMETERREGEX2: /=(.+)/,
-	        HEADER: { 'Content-Type': 'application/x-www-form-urlencoded' }
+	        HEADER: this.Headers
 	      };
 	      return CognitoConstants;
 	    }
